@@ -6,7 +6,11 @@ import com.zlotko.enums.LoanPeriod;
 import com.zlotko.models.UserDto;
 import com.zlotko.pages.HomePage;
 import com.zlotko.pages.LoanQuestionnairePage;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static com.zlotko.core.assertions.FluentAssertion.fluentAssert;
 import static org.hamcrest.CoreMatchers.is;
@@ -17,12 +21,20 @@ public class LoanSelectionTest extends BaseTest {
     private HomePage homePage = new HomePage();
     private LoanQuestionnairePage loanQuestionnairePage = new LoanQuestionnairePage();
 
-    @Test
-    public void shouldNotLogInUnderInvalidCredentials() {
-        UserDto invalidUser = new UserDto();
-        invalidUser.setEmail("test");
-        invalidUser.setPassword("test");
+    public static Stream<Arguments> invalidCredentials() {
+        return Stream.of(Arguments.of(new UserDto("test1", "test2"))
+        );
+    }
 
+    public static Stream<Arguments> baseLoanParams() {
+        return Stream.of(
+                Arguments.of(LoanCategory.ACCOMODATION, 2750, LoanPeriod.TWENTY_FOUR_MONTHS)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidCredentials")
+    public void shouldNotLogInUnderInvalidCredentials(UserDto invalidUser) {
         homePage.open();
         homePage.logIn(invalidUser);
 
@@ -31,13 +43,14 @@ public class LoanSelectionTest extends BaseTest {
                 is(true)));
     }
 
-    @Test
-    public void shouldSearchForLoan() {
+    @ParameterizedTest
+    @MethodSource("baseLoanParams")
+    public void shouldSearchForLoan(LoanCategory loanCategory, int netLoanAmount, LoanPeriod loanPeriod) {
         homePage.open();
         homePage.switchToLayoutFrame();
-        homePage.selectLoanCategory(LoanCategory.ACCOMODATION);
-        homePage.selectNetLoanAmount(2750);
-        homePage.selectLoanPeriod(LoanPeriod.TWENTY_FOUR_MONTHS);
+        homePage.selectLoanCategory(loanCategory);
+        homePage.selectNetLoanAmount(netLoanAmount);
+        homePage.selectLoanPeriod(loanPeriod);
         homePage.clickCompareCreditsButton();
 
         fluentAssert(() -> assertThat("Loan Questionnaire page is not loaded",

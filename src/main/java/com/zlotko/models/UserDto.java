@@ -1,10 +1,12 @@
 package com.zlotko.models;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class UserDto {
 
-    public String email;
-    public String password;
+    private String email;
+    private String password;
 }
