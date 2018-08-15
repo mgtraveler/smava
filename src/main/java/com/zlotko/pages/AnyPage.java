@@ -1,6 +1,7 @@
 package com.zlotko.pages;
 
 import com.zlotko.core.annotations.DefaultUrl;
+import io.qameta.allure.Step;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.support.PageFactory;
 
@@ -13,6 +14,7 @@ public class AnyPage {
         PageFactory.initElements(getWebDriver(), this);
     }
 
+    @Step
     public void open() {
         String defaultUrl = getDeclaredDefaultUrl();
         goToPage(defaultUrl);

@@ -6,6 +6,7 @@ import com.zlotko.enums.LoanPeriod;
 import com.zlotko.models.UserDto;
 import com.zlotko.pages.HomePage;
 import com.zlotko.pages.LoanQuestionnairePage;
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +33,7 @@ public class LoanSelectionTest extends BaseTest {
         );
     }
 
+    @Description("User can not log in under invalid credentials")
     @ParameterizedTest
     @MethodSource("invalidCredentials")
     public void shouldNotLogInUnderInvalidCredentials(UserDto invalidUser) {
@@ -43,6 +45,7 @@ public class LoanSelectionTest extends BaseTest {
                 is(true)));
     }
 
+    @Description("User can search for loan")
     @ParameterizedTest
     @MethodSource("baseLoanParams")
     public void shouldSearchForLoan(LoanCategory loanCategory, int netLoanAmount, LoanPeriod loanPeriod) {

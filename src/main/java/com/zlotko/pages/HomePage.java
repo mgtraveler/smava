@@ -4,6 +4,7 @@ import com.zlotko.core.annotations.DefaultUrl;
 import com.zlotko.enums.LoanCategory;
 import com.zlotko.enums.LoanPeriod;
 import com.zlotko.models.UserDto;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,6 +45,7 @@ public class HomePage extends AnyPage {
     @FindBy(css = "iframe[class='HomepageLayout__iframe']")
     private WebElement layoutFrame;
 
+    @Step("Log in under email:{userDto.email} and password:{userDto.password}")
     public void logIn(UserDto userDto) {
         click(loginLink);
         type(emailInput, userDto.getEmail());
@@ -51,22 +53,27 @@ public class HomePage extends AnyPage {
         click(loginButton);
     }
 
+    @Step
     public void switchToLayoutFrame() {
         switchToFrame(layoutFrame);
     }
 
+    @Step("select loan category: {loanCategory.optionText}")
     public void selectLoanCategory(LoanCategory loanCategory) {
         selectOptionByValue(loanCategoryDropdown, loanCategory.optionValue());
     }
 
+    @Step
     public void selectNetLoanAmount(int amount) {
         selectOptionByValue(netLoanAmountDropdown, amount);
     }
 
+    @Step("select loan period: {loanPeriod.optionText}")
     public void selectLoanPeriod(LoanPeriod loanPeriod) {
         selectComponentByIndex(loanPeriodSelectComponent, loanPeriod.index());
     }
 
+    @Step
     public void clickCompareCreditsButton() {
         click(compareCreditsButton);
     }
