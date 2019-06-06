@@ -20,6 +20,7 @@ public class AnyPage {
         goToPage(defaultUrl);
     }
 
+    @Step
     public boolean isOnPage() {
         return getWebDriver().getCurrentUrl().contains(getDeclaredDefaultUrl());
     }
