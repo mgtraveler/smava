@@ -45,7 +45,7 @@ public class HomePage extends AnyPage {
     @FindBy(css = "iframe[class='HomepageLayout__iframe']")
     private WebElement layoutFrame;
 
-    @Step("Log in under email:{userDto.email} and password:{userDto.password}")
+    @Step
     public void logIn(UserDto userDto) {
         click(loginLink);
         type(emailInput, userDto.getEmail());
@@ -76,5 +76,10 @@ public class HomePage extends AnyPage {
     @Step
     public void clickCompareCreditsButton() {
         click(compareCreditsButton);
+    }
+
+    @Step
+    public boolean isLoginErrorMessageDisplayed() {
+        return getLoginErrorMessage().isDisplayed();
     }
 }
