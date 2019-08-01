@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 
 import static com.zlotko.utils.WaitUtil.fluentWait;
 
-public class FluentAssertion {
+public final class FluentAssertion {
+
+    private FluentAssertion() {
+    }
 
     public static void fluentAssert(Runnable assertion) {
         try {

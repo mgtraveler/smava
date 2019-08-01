@@ -27,10 +27,6 @@ public class AnyPage {
 
     private String getDeclaredDefaultUrl() {
         DefaultUrl urlAnnotation = this.getClass().getAnnotation(DefaultUrl.class);
-        if (urlAnnotation != null) {
-            return urlAnnotation.value();
-        } else {
-            return StringUtils.EMPTY;
-        }
+        return urlAnnotation != null ? urlAnnotation.value() : StringUtils.EMPTY;
     }
 }

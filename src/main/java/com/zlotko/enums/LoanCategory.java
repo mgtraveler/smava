@@ -1,6 +1,7 @@
 package com.zlotko.enums;
 
 public enum LoanCategory {
+
     ACCOMODATION("886", "Wohnen");
 
     private String optionValue;

@@ -23,12 +23,12 @@ public class LoanSelectionTest extends BaseTest {
     private HomePage homePage = new HomePage();
     private LoanQuestionnairePage loanQuestionnairePage = new LoanQuestionnairePage();
 
-    public static Stream<Arguments> invalidCredentials() {
+    private static Stream<Arguments> invalidCredentials() {
         return Stream.of(Arguments.of(new UserDto("test1", "test2"))
         );
     }
 
-    public static Stream<Arguments> baseLoanParams() {
+    private static Stream<Arguments> baseLoanParams() {
         return Stream.of(
                 Arguments.of(LoanCategory.ACCOMODATION, 2750, LoanPeriod.TWENTY_FOUR_MONTHS)
         );

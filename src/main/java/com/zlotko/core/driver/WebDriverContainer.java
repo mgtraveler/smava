@@ -20,36 +20,31 @@ public final class WebDriverContainer {
 
     public static WebDriver getWebDriver() {
         WebDriver webDriver = WEB_DRIVERS_BY_THREAD.get(currentThread().getId());
-        if (webDriver != null) {
-            return webDriver;
+
+        if (webDriver == null) {
+            webDriver = WebDriverFactory.createWebDriver();
+            setWebDriver(webDriver);
         }
-        LOGGER.info("New WebDriver is created for thread: {}", currentThread().getId());
-        return setWebDriver(WebDriverFactory.createWebDriver());
+        return webDriver;
     }
 
-    public static void closeWebDriver() {
-        closeWebDriver(currentThread());
+    public static void quitAllWebDrivers() {
+        ALL_WEB_DRIVERS_THREADS.forEach(WebDriverContainer::quitWebDriver);
     }
 
-    public static void closeUnusedWebDrivers() {
-        for (Thread thread : ALL_WEB_DRIVERS_THREADS) {
+    public static void quitUnusedWebDrivers() {
+        ALL_WEB_DRIVERS_THREADS.forEach(thread -> {
             if (!thread.isAlive()) {
-                closeWebDriver(thread);
+                quitWebDriver(thread);
             }
-        }
+        });
     }
 
     public static boolean hasWebDriverStarted() {
         return WEB_DRIVERS_BY_THREAD.containsKey(currentThread().getId());
     }
 
-    private static WebDriver setWebDriver(WebDriver webDriver) {
-        WEB_DRIVERS_BY_THREAD.put(currentThread().getId(), webDriver);
-        ALL_WEB_DRIVERS_THREADS.add(currentThread());
-        return webDriver;
-    }
-
-    private static void closeWebDriver(Thread thread) {
+    private static void quitWebDriver(Thread thread) {
         long threadId = thread.getId();
         ALL_WEB_DRIVERS_THREADS.remove(thread);
         WebDriver webdriver = WEB_DRIVERS_BY_THREAD.remove(threadId);
@@ -58,5 +53,10 @@ public final class WebDriverContainer {
             LOGGER.info("Close {} for thread: {}.", webdriver, threadId);
             webdriver.quit();
         }
+    }
+
+    private static void setWebDriver(WebDriver webDriver) {
+        WEB_DRIVERS_BY_THREAD.put(currentThread().getId(), webDriver);
+        ALL_WEB_DRIVERS_THREADS.add(currentThread());
     }
 }
